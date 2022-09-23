@@ -1,0 +1,708 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Agreement {
+  ReferenceId                              BigInt                           @id @default(autoincrement())
+  fimTtPreviousLicenseNumber               String?                          @db.Text
+  fimTaComments                            String?                          @db.Text
+  fimDdDateExecuted                        String?                          @db.Text
+  fimLicenseAgreement0                     String?                          @db.Text
+  constructionGrandfatherNotes1452571739   String?                          @map("_constructionGrandfatherNotes1452571739") @db.Text
+  contractLength1253742146                 String?                          @map("_contractLength1253742146") @db.Text
+  fimDdApprovedDate                        String?                          @db.Text
+  constructionGrandfatherDateAdded15864853 String?                          @map("_constructionGrandfatherDateAdded15864853") @db.Text
+  miscellaneous2033967498                  String?                          @map("_miscellaneous2033967498") @db.Text
+  fimDdExpirationDate                      String?                          @db.Text
+  fimDdClosingDate                         String?                          @db.Text
+  lastUpdated                              String?                          @db.Text
+  constructionAddendum1567028247           String?                          @map("_constructionAddendum1567028247") @db.Text
+  constructionGrandfather71954091          String?                          @map("_constructionGrandfather71954091") @db.Text
+  miscellaneousAddedDate345281370          String?                          @map("_miscellaneousAddedDate345281370") @db.Text
+  constructionAddendumDateAdded579433813   String?                          @map("_constructionAddendumDateAdded579433813") @db.Text
+  constructionAddendum11166680038          String?                          @map("_constructionAddendum11166680038") @db.Text
+  constructionAddendumNotes971483328       String?                          @map("_constructionAddendumNotes971483328") @db.Text
+  CenterInfoId                             BigInt                           @db.UnsignedBigInt
+  CenterInfoReferenceId                    BigInt?
+  CenterInfo                               CenterInfo?                      @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_Agreement_CenterInfo_CenterInfoReferenceId")
+  AgreementContactDetailsAddress           AgreementContactDetailsAddress[]
+
+  @@index([CenterInfoReferenceId], map: "IX_Agreement_CenterInfoReferenceId")
+}
+
+model AgreementContactDetailsAddress {
+  ReferenceId          BigInt     @id @default(autoincrement())
+  zipcode              String?    @db.Text
+  country              String?    @db.Text
+  emailIds             String?    @db.Text
+  extn                 String?    @db.Text
+  address              String?    @db.Text
+  faxNumbers           String?    @db.Text
+  mobileNumbers        String?    @db.Text
+  city                 String?    @db.Text
+  state                String?    @db.Text
+  phoneNumbers         String?    @db.Text
+  AgreementReferenceId BigInt?
+  Agreement            Agreement? @relation(fields: [AgreementReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_AgreementContactDetailsAddress_Agreement_AgreementReferenceId")
+
+  @@index([AgreementReferenceId], map: "IX_AgreementContactDetailsAddress_AgreementReferenceId")
+}
+
+model BillingContactDetailsAddress {
+  ReferenceId          BigInt     @id @default(autoincrement())
+  zipcode              String?    @db.Text
+  country              String?    @db.Text
+  emailIds             String?    @db.Text
+  extn                 String?    @db.Text
+  address              String?    @db.Text
+  faxNumbers           String?    @db.Text
+  mobileNumbers        String?    @db.Text
+  city                 String?    @db.Text
+  state                String?    @db.Text
+  phoneNumbers         String?    @db.Text
+  FinancialReferenceId BigInt?
+  Financial            Financial? @relation(fields: [FinancialReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_BillingContactDetailsAddress_Financial_FinancialReferenceId")
+
+  @@index([FinancialReferenceId], map: "IX_BillingContactDetailsAddress_FinancialReferenceId")
+}
+
+model Call {
+  ReferenceId           BigInt      @id @default(autoincrement())
+  date                  String?     @db.Text
+  timeAdded             String?     @db.Text
+  comments              String?     @db.Text
+  subject               String?     @db.Text
+  callStatus            String?     @db.Text
+  loggedByID            String?     @db.Text
+  callType              String?     @db.Text
+  CenterInfoId          BigInt      @db.UnsignedBigInt
+  CenterInfoReferenceId BigInt?
+  CenterInfo            CenterInfo? @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_Call_CenterInfo_CenterInfoReferenceId")
+
+  @@index([CenterInfoReferenceId], map: "IX_Call_CenterInfoReferenceId")
+}
+
+model CenterInfo {
+  ReferenceId                        BigInt             @id @default(autoincrement())
+  country                            String?            @db.Text
+  city                               String?            @db.Text
+  franchiseeName                     String?            @db.Text
+  storeTypeId                        String?            @db.Text
+  transferDate                       String?            @db.Text
+  storeStatus                        String?            @db.Text
+  distributorLicenseNumber2023869614 String?            @map("_distributorLicenseNumber2023869614") @db.Text
+  versionID                          String?            @db.Text
+  areaID                             String?            @db.Text
+  storePhone                         String?            @db.Text
+  customerAccountNumber1215412729    String?            @map("_customerAccountNumber1215412729") @db.Text
+  state                              String?            @db.Text
+  grandStoreOpeningDate              String?            @db.Text
+  taxRateId                          String?            @db.Text
+  openingDate                        String?            @db.Text
+  lastAttended                       String?            @db.Text
+  licenseBrand2012129995             String?            @map("_licenseBrand2012129995") @db.Text
+  emailID                            String?            @db.Text
+  transactionType                    String?            @db.Text
+  enterpriseNumber1691878038         String?            @map("_enterpriseNumber1691878038") @db.Text
+  lastUpdate                         String?            @db.Text
+  reportPeriodStartDate              String?            @db.Text
+  storeEmail                         String?            @db.Text
+  franchiseeStatus                   String?            @db.Text
+  services1273437941                 String?            @map("_services1273437941") @db.Text
+  status                             String?            @db.Text
+  centerName                         String?            @db.Text
+  Agreement                          Agreement[]
+  Call                               Call[]
+  ContractSigning                    ContractSigning[]
+  Employee                           Employee[]
+  Entity                             Entity[]
+  Financial                          Financial[]
+  LocationDetail                     LocationDetail[]
+  Mail                               Mail[]
+  NationalAccount                    NationalAccount[]
+  Owner                              Owner[]
+  PromissoryNote                     PromissoryNote[]
+  Renewal                            Renewal[]
+  SupportStructure                   SupportStructure[]
+  Termination                        Termination[]
+  Territory                          Territory[]
+  TerritoryZipCode                   TerritoryZipCode[]
+}
+
+model ContractSigning {
+  ReferenceId                            BigInt                  @id @default(autoincrement())
+  fimContract5                           String?                 @db.Text
+  fimContract4                           String?                 @db.Text
+  fimContract6                           String?                 @db.Text
+  fimDdContractRecievedSigned            String?                 @db.Text
+  fimContract1                           String?                 @db.Text
+  fimContract0                           String?                 @db.Text
+  fimContract3                           String?                 @db.Text
+  fimContract2                           String?                 @db.Text
+  recByFrancDate1                        String?                 @db.Text
+  lastUpdated                            String?                 @db.Text
+  versionOfUfoc                          String?                 @db.Text
+  fimDdUfocDate                          String?                 @db.Text
+  fimRrPromissoryAgreementProperlySigned String?                 @db.Text
+  CenterInfoId                           BigInt                  @db.UnsignedBigInt
+  CenterInfoReferenceId                  BigInt?
+  CenterInfo                             CenterInfo?             @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_ContractSigning_CenterInfo_CenterInfoReferenceId")
+  FimContractAdditional                  FimContractAdditional[]
+
+  @@index([CenterInfoReferenceId], map: "IX_ContractSigning_CenterInfoReferenceId")
+}
+
+model Employee {
+  ReferenceId           BigInt                @id @default(autoincrement())
+  lastName              String?               @db.Text
+  country               String?               @db.Text
+  address               String?               @db.Text
+  city                  String?               @db.Text
+  jobTitle              String?               @db.Text
+  muidValue             String?               @db.Text
+  mobile                String?               @db.Text
+  phone1                String?               @db.Text
+  zipcode               String?               @db.Text
+  firstName             String?               @db.Text
+  lastUpdated           String?               @db.Text
+  state                 String?               @db.Text
+  email                 String?               @db.Text
+  CenterInfoId          BigInt                @db.UnsignedBigInt
+  CenterInfoReferenceId BigInt?
+  CenterInfo            CenterInfo?           @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_Employee_CenterInfo_CenterInfoReferenceId")
+  FimEmployeesMapping   FimEmployeesMapping[]
+
+  @@index([CenterInfoReferenceId], map: "IX_Employee_CenterInfoReferenceId")
+}
+
+model Entity {
+  ReferenceId                              BigInt                     @id @default(autoincrement())
+  fimCbEntityType                          String?                    @db.Text
+  fimEntityDetail0                         String?                    @db.Text
+  overallInsuranceCompliantStatus80720767  String?                    @map("_overallInsuranceCompliantStatus80720767") @db.Text
+  overallInsuranceCompliantNotes1358246222 String?                    @map("_overallInsuranceCompliantNotes1358246222") @db.Text
+  lastUpdated                              String?                    @db.Text
+  areaID                                   String?                    @db.Text
+  fimCbOtherEntityType                     String?                    @db.Text
+  fimTtEntityName                          String?                    @db.Text
+  CenterInfoId                             BigInt                     @db.UnsignedBigInt
+  CenterInfoReferenceId                    BigInt?
+  CenterInfo                               CenterInfo?                @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_Entity_CenterInfo_CenterInfoReferenceId")
+  EntityDetailAddress                      EntityDetailAddress[]
+  FimEntityLocationMapping                 FimEntityLocationMapping[]
+  Insdoc                                   Insdoc[]
+  InsuranceDetail                          InsuranceDetail[]
+
+  @@index([CenterInfoReferenceId], map: "IX_Entity_CenterInfoReferenceId")
+}
+
+model EntityDetailAddress {
+  ReferenceId       BigInt  @id @default(autoincrement())
+  zipcode           String? @db.Text
+  country           String? @db.Text
+  emailIds          String? @db.Text
+  extn              String? @db.Text
+  address           String? @db.Text
+  faxNumbers        String? @db.Text
+  mobileNumbers     String? @db.Text
+  city              String? @db.Text
+  state             String? @db.Text
+  phoneNumbers      String? @db.Text
+  EntityReferenceId BigInt?
+  Entity            Entity? @relation(fields: [EntityReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_EntityDetailAddress_Entity_EntityReferenceId")
+
+  @@index([EntityReferenceId], map: "IX_EntityDetailAddress_EntityReferenceId")
+}
+
+model FimContractAdditional {
+  ReferenceId                BigInt           @id @default(autoincrement())
+  recByFrancDate2            String?          @db.Text
+  versionOfAdditionalUfoc    String?          @db.Text
+  browserTypeAdditional      String?          @db.Text
+  addUfocDate                String?          @db.Text
+  bussDay10ExpDate           String?          @db.Text
+  ipAddressAdditional        String?          @db.Text
+  ContractSigningReferenceId BigInt?
+  ContractSigning            ContractSigning? @relation(fields: [ContractSigningReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_FimContractAdditional_ContractSigning_ContractSigningReferen~")
+
+  @@index([ContractSigningReferenceId], map: "IX_FimContractAdditional_ContractSigningReferenceId")
+}
+
+model FimEmployeesMapping {
+  ReferenceId         BigInt    @id @default(autoincrement())
+  EmployeeReferenceId BigInt?
+  Employee            Employee? @relation(fields: [EmployeeReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_FimEmployeesMapping_Employee_EmployeeReferenceId")
+
+  @@index([EmployeeReferenceId], map: "IX_FimEmployeesMapping_EmployeeReferenceId")
+}
+
+model FimEntityLocationMapping {
+  ReferenceId          BigInt  @id @default(autoincrement())
+  typeOfOwnership      String? @db.Text
+  storeOwnedPercentage String? @db.Text
+  EntityReferenceId    BigInt?
+  Entity               Entity? @relation(fields: [EntityReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_FimEntityLocationMapping_Entity_EntityReferenceId")
+
+  @@index([EntityReferenceId], map: "IX_FimEntityLocationMapping_EntityReferenceId")
+}
+
+model Financial {
+  ReferenceId                  BigInt                         @id @default(autoincrement())
+  middleName1162330766         String?                        @map("_middleName1162330766") @db.Text
+  fimRrFinancialStatement      String?                        @db.Text
+  fimTtCashRevenue             String?                        @db.Text
+  fimTtLastName                String?                        @db.Text
+  fimTtNoteRevenue             String?                        @db.Text
+  fimRrFinanceApproved         String?                        @db.Text
+  lastUpdated                  String?                        @db.Text
+  fimTtFranchiseeFee           String?                        @db.Text
+  fimCbtContactTitle           String?                        @db.Text
+  fimFinancial0                String?                        @db.Text
+  fimTtFirstName               String?                        @db.Text
+  CenterInfoId                 BigInt                         @db.UnsignedBigInt
+  CenterInfoReferenceId        BigInt?
+  CenterInfo                   CenterInfo?                    @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_Financial_CenterInfo_CenterInfoReferenceId")
+  BillingContactDetailsAddress BillingContactDetailsAddress[]
+
+  @@index([CenterInfoReferenceId], map: "IX_Financial_CenterInfoReferenceId")
+}
+
+model Franchisee {
+  ReferenceId                        BigInt                @id @default(autoincrement())
+  country                            String?               @db.Text
+  city                               String?               @db.Text
+  franchiseeName                     String?               @db.Text
+  storeTypeId                        String?               @db.Text
+  enterpriseName1124775989           String?               @map("_enterpriseName1124775989") @db.Text
+  transferDate                       String?               @db.Text
+  storeStatus                        String?               @db.Text
+  distributorLicenseNumber2023869614 String?               @map("_distributorLicenseNumber2023869614") @db.Text
+  versionID                          String?               @db.Text
+  areaID                             String?               @db.Text
+  storePhone                         String?               @db.Text
+  customerAccountNumber1215412729    String?               @map("_customerAccountNumber1215412729") @db.Text
+  state                              String?               @db.Text
+  grandStoreOpeningDate              String?               @db.Text
+  taxRateId                          String?               @db.Text
+  openingDate                        String?               @db.Text
+  lastAttended                       String?               @db.Text
+  licenseBrand2012129995             String?               @map("_licenseBrand2012129995") @db.Text
+  emailID                            String?               @db.Text
+  transactionType                    String?               @db.Text
+  enterpriseNumber1691878038         String?               @map("_enterpriseNumber1691878038") @db.Text
+  lastUpdate                         String?               @db.Text
+  reportPeriodStartDate              String?               @db.Text
+  storeEmail                         String?               @db.Text
+  franchiseeStatus                   String?               @db.Text
+  services1273437941                 String?               @map("_services1273437941") @db.Text
+  status                             String?               @db.Text
+  centerName                         String?               @db.Text
+  FranchiseeFimEntity                FranchiseeFimEntity[]
+  FranchiseeFimOwner                 FranchiseeFimOwner[]
+}
+
+model FranchiseeFimEntity {
+  ReferenceId             BigInt      @id @default(autoincrement())
+  fimCbEntityType         String?     @db.Text
+  fimCbCountryOfFormation String?     @db.Text
+  fimTtEntityName         String?     @db.Text
+  fimTtTaxpayer           String?     @db.Text
+  fimCbStateOfFormation   String?     @db.Text
+  FranchiseeReferenceId   BigInt?
+  Franchisee              Franchisee? @relation(fields: [FranchiseeReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_FranchiseeFimEntity_Franchisee_FranchiseeReferenceId")
+
+  @@index([FranchiseeReferenceId], map: "IX_FranchiseeFimEntity_FranchiseeReferenceId")
+}
+
+model FranchiseeFimOwner {
+  ReferenceId           BigInt      @id @default(autoincrement())
+  firstName             String?     @db.Text
+  lastName              String?     @db.Text
+  ownerTitle            String?     @db.Text
+  muidValue             String?     @db.Text
+  FranchiseeReferenceId BigInt?
+  Franchisee            Franchisee? @relation(fields: [FranchiseeReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_FranchiseeFimOwner_Franchisee_FranchiseeReferenceId")
+
+  @@index([FranchiseeReferenceId], map: "IX_FranchiseeFimOwner_FranchiseeReferenceId")
+}
+
+model Insdoc {
+  ReferenceId             BigInt  @id @default(autoincrement())
+  insuranceType463600951  String? @map("_insuranceType463600951") @db.Text
+  documentTitle2048545135 String? @map("_documentTitle2048545135") @db.Text
+  EntityReferenceId       BigInt?
+  Entity                  Entity? @relation(fields: [EntityReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_Insdoc_Entity_EntityReferenceId")
+
+  @@index([EntityReferenceId], map: "IX_Insdoc_EntityReferenceId")
+}
+
+model InsuranceDetail {
+  ReferenceId               BigInt  @id @default(autoincrement())
+  insuranceType492175645    String? @map("_insuranceType492175645") @db.Text
+  expirationDate1758332938  String? @map("_expirationDate1758332938") @db.Text
+  complianceNotes26684990   String? @map("_complianceNotes26684990") @db.Text
+  compliantStatus2091874476 String? @map("_compliantStatus2091874476") @db.Text
+  policyNumber1100011430    String? @map("_policyNumber1100011430") @db.Text
+  EntityReferenceId         BigInt?
+  Entity                    Entity? @relation(fields: [EntityReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_InsuranceDetail_Entity_EntityReferenceId")
+
+  @@index([EntityReferenceId], map: "IX_InsuranceDetail_EntityReferenceId")
+}
+
+model LocationDetail {
+  ReferenceId              BigInt      @id @default(autoincrement())
+  country274603683         String?     @map("_country274603683") @db.Text
+  phoneExtension1270212794 String?     @map("_phoneExtension1270212794") @db.Text
+  dashlocation2085121690   String?     @map("_dashlocation2085121690") @db.Text
+  streetAddress2810155978  String?     @map("_streetAddress2810155978") @db.Text
+  stateProvince105415221   String?     @map("_stateProvince105415221") @db.Text
+  email1470516513          String?     @map("_email1470516513") @db.Text
+  zipPostalCode1954302860  String?     @map("_zipPostalCode1954302860") @db.Text
+  locationId1153808795     String?     @map("_locationId1153808795") @db.Text
+  city1512122710           String?     @map("_city1512122710") @db.Text
+  streetAddress1200549108  String?     @map("_streetAddress1200549108") @db.Text
+  fax553453540             String?     @map("_fax553453540") @db.Text
+  mobile931165842          String?     @map("_mobile931165842") @db.Text
+  phone1903185288          String?     @map("_phone1903185288") @db.Text
+  jdeLocationId926127678   String?     @map("_jdeLocationId926127678") @db.Text
+  CenterInfoId             BigInt      @db.UnsignedBigInt
+  CenterInfoReferenceId    BigInt?
+  CenterInfo               CenterInfo? @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_LocationDetail_CenterInfo_CenterInfoReferenceId")
+
+  @@index([CenterInfoReferenceId], map: "IX_LocationDetail_CenterInfoReferenceId")
+}
+
+model Mail {
+  ReferenceId           BigInt      @id @default(autoincrement())
+  mailSubject           String?     @db.Text
+  lastOpened            String?     @db.Text
+  mailTo                String?     @db.Text
+  mailBcc               String?     @db.Text
+  mailFrom              String?     @db.Text
+  openingDate           String?     @db.Text
+  mailDate              String?     @db.Text
+  mailCc                String?     @db.Text
+  CenterInfoId          BigInt      @db.UnsignedBigInt
+  CenterInfoReferenceId BigInt?
+  CenterInfo            CenterInfo? @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_Mail_CenterInfo_CenterInfoReferenceId")
+
+  @@index([CenterInfoReferenceId], map: "IX_Mail_CenterInfoReferenceId")
+}
+
+model NationalAccount {
+  ReferenceId               BigInt      @id @default(autoincrement())
+  lastUpdated               String?     @db.Text
+  accountName1104127104     String?     @map("_accountName1104127104") @db.Text
+  accountServices1543744825 String?     @map("_accountServices1543744825") @db.Text
+  accountType751556397      String?     @map("_accountType751556397") @db.Text
+  CenterInfoId              BigInt      @db.UnsignedBigInt
+  CenterInfoReferenceId     BigInt?
+  CenterInfo                CenterInfo? @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_NationalAccount_CenterInfo_CenterInfoReferenceId")
+
+  @@index([CenterInfoReferenceId], map: "IX_NationalAccount_CenterInfoReferenceId")
+}
+
+model Owner {
+  ReferenceId           BigInt          @id @default(autoincrement())
+  typeOfOwnership       String?         @db.Text
+  isManager             String?         @db.Text
+  ownershipStartDate    String?         @db.Text
+  storeOwnedPercentage  String?         @db.Text
+  CenterInfoId          BigInt          @db.UnsignedBigInt
+  CenterInfoReferenceId BigInt?
+  CenterInfo            CenterInfo?     @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_Owner_CenterInfo_CenterInfoReferenceId")
+  OwnerFimOwner         OwnerFimOwner[]
+
+  @@index([CenterInfoReferenceId], map: "IX_Owner_CenterInfoReferenceId")
+}
+
+model OwnerFimOwner {
+  ReferenceId             BigInt  @id @default(autoincrement())
+  lastName                String? @db.Text
+  extn                    String? @db.Text
+  spousePhoneExtn         String? @db.Text
+  spousePhone             String? @db.Text
+  disability132704557     String? @map("_disability132704557") @db.Text
+  lastUpdated             String? @db.Text
+  homeCity                String? @db.Text
+  veteranStatus1415451131 String? @map("_veteranStatus1415451131") @db.Text
+  fax                     String? @db.Text
+  email                   String? @db.Text
+  homeAddress             String? @db.Text
+  gender989429608         String? @map("_gender989429608") @db.Text
+  muidValue               String? @db.Text
+  mobile                  String? @db.Text
+  homeState               String? @db.Text
+  spouseFirstName         String? @db.Text
+  homeZipCode             String? @db.Text
+  spouseLastName          String? @db.Text
+  ethnicity133631542      String? @map("_ethnicity133631542") @db.Text
+  firstName               String? @db.Text
+  spouseMobile            String? @db.Text
+  ownerTitle              String? @db.Text
+  phone                   String? @db.Text
+  homeCountry             String? @db.Text
+  remarks                 String? @db.Text
+  OwnerReferenceId        BigInt?
+  Owner                   Owner?  @relation(fields: [OwnerReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_OwnerFimOwner_Owner_OwnerReferenceId")
+
+  @@index([OwnerReferenceId], map: "IX_OwnerFimOwner_OwnerReferenceId")
+}
+
+model PromissoryNote {
+  ReferenceId                 BigInt      @id @default(autoincrement())
+  promissoryNotePrepared      String?     @db.Text
+  reportPeriod1085632444      String?     @map("_reportPeriod1085632444") @db.Text
+  promissoryFinalPaymentDated String?     @db.Text
+  termBased                   String?     @db.Text
+  planFinalPaymentDated       String?     @db.Text
+  downPaymentAmount           String?     @db.Text
+  balanceAmount               String?     @db.Text
+  principalAmount             String?     @db.Text
+  timeFrame                   String?     @db.Text
+  lastUpdated                 String?     @db.Text
+  amountInvoiced              String?     @db.Text
+  amountPaid                  String?     @db.Text
+  paymentPlanAmount           String?     @db.Text
+  annualInterestRate          String?     @db.Text
+  downPayment                 String?     @db.Text
+  promissoryNoteName          String?     @db.Text
+  monthlyPaymentAmount        String?     @db.Text
+  category                    String?     @db.Text
+  downPaymentStatus           String?     @db.Text
+  startDate                   String?     @db.Text
+  promissoryNoteDated         String?     @db.Text
+  status                      String?     @db.Text
+  CenterInfoId                BigInt      @db.UnsignedBigInt
+  CenterInfoReferenceId       BigInt?
+  CenterInfo                  CenterInfo? @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_PromissoryNote_CenterInfo_CenterInfoReferenceId")
+
+  @@index([CenterInfoReferenceId], map: "IX_PromissoryNote_CenterInfoReferenceId")
+}
+
+model Renewal {
+  ReferenceId                                      BigInt      @id @default(autoincrement())
+  renewalFeeInvoiceNumber710907960                 String?     @map("_renewalFeeInvoiceNumber710907960") @db.Text
+  ownershipChangeNew499786019                      String?     @map("_ownershipChangeNew499786019") @db.Text
+  currentStatusDummy1438168349                     String?     @map("_currentStatusDummy1438168349") @db.Text
+  fimCbCurrentStatus                               String?     @db.Text
+  dateAgreementSignedByFranchisee1844365169        String?     @map("_dateAgreementSignedByFranchisee1844365169") @db.Text
+  lastUpdated                                      String?     @db.Text
+  fimDdNewExpirationDate                           String?     @db.Text
+  versionOfFdd62993460                             String?     @map("_versionOfFdd62993460") @db.Text
+  renewalFeeAmount1569283816                       String?     @map("_renewalFeeAmount1569283816") @db.Text
+  franchiseeApprovalStatus1893442058               String?     @map("_franchiseeApprovalStatus1893442058") @db.Text
+  dateEntityChangefddDisclosureSent1321125445      String?     @map("_dateEntityChangefddDisclosureSent1321125445") @db.Text
+  fimDdAsOf                                        String?     @db.Text
+  renewalFeesNeededNew105914599                    String?     @map("_renewalFeesNeededNew105914599") @db.Text
+  dateExecutedAgreementEmailedToFranchise142678684 String?     @map("_dateExecutedAgreementEmailedToFranchise142678684") @db.Text
+  dateFddSigned1524103858                          String?     @map("_dateFddSigned1524103858") @db.Text
+  renewalFeesInvoiceDateSentNew1720934182          String?     @map("_renewalFeesInvoiceDateSentNew1720934182") @db.Text
+  dateAgreementSentForSignature104281524           String?     @map("_dateAgreementSentForSignature104281524") @db.Text
+  compliantForRenewal2079893133                    String?     @map("_compliantForRenewal2079893133") @db.Text
+  dateOwnershipChangeApproved1358366771            String?     @map("_dateOwnershipChangeApproved1358366771") @db.Text
+  franchiseSpecialistEmail2057111456               String?     @map("_franchiseSpecialistEmail2057111456") @db.Text
+  fimTaNotes                                       String?     @db.Text
+  ownershipChangeReviewNew1235377795               String?     @map("_ownershipChangeReviewNew1235377795") @db.Text
+  fimCbOtherCurrentStatus                          String?     @db.Text
+  dateRenewalFeesPaidNew300358608                  String?     @map("_dateRenewalFeesPaidNew300358608") @db.Text
+  datePreviewAgreementReceivedByFranchise3979663   String?     @map("_datePreviewAgreementReceivedByFranchise3979663") @db.Text
+  complianceNotes117026493                         String?     @map("_complianceNotes117026493") @db.Text
+  CenterInfoId                                     BigInt      @db.UnsignedBigInt
+  CenterInfoReferenceId                            BigInt?
+  CenterInfo                                       CenterInfo? @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_Renewal_CenterInfo_CenterInfoReferenceId")
+
+  @@index([CenterInfoReferenceId], map: "IX_Renewal_CenterInfoReferenceId")
+}
+
+model SupportStructure {
+  ReferenceId                      BigInt      @id @default(autoincrement())
+  lastUpdated                      String?     @db.Text
+  licenseBrand1844909088           String?     @map("_licenseBrand1844909088") @db.Text
+  teamCoordinator760397025         String?     @map("_teamCoordinator760397025") @db.Text
+  bdcContactEmail940731256         String?     @map("_bdcContactEmail940731256") @db.Text
+  bddareaManager772394745          String?     @map("_bddareaManager772394745") @db.Text
+  bdc1769435179                    String?     @map("_bdc1769435179") @db.Text
+  licenseSupportedByBrand371347950 String?     @map("_licenseSupportedByBrand371347950") @db.Text
+  srDirector2102278847             String?     @map("_srDirector2102278847") @db.Text
+  CenterInfoId                     BigInt      @db.UnsignedBigInt
+  CenterInfoReferenceId            BigInt?
+  CenterInfo                       CenterInfo? @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_SupportStructure_CenterInfo_CenterInfoReferenceId")
+
+  @@index([CenterInfoReferenceId], map: "IX_SupportStructure_CenterInfoReferenceId")
+}
+
+model Termination {
+  ReferenceId                                       BigInt                             @id @default(autoincrement())
+  marquetteGroupBalanceDue1599611155                String?                            @map("_marquetteGroupBalanceDue1599611155") @db.Text
+  fimCbTypeOfAction                                 String?                            @db.Text
+  priorYearRevenue1179248146                        String?                            @map("_priorYearRevenue1179248146") @db.Text
+  bdcComments2121396830                             String?                            @map("_bdcComments2121396830") @db.Text
+  pursueFutureFees1929620554                        String?                            @map("_pursueFutureFees1929620554") @db.Text
+  dischargeOfDebtor1805686057                       String?                            @map("_dischargeOfDebtor1805686057") @db.Text
+  fimDdActionDate                                   String?                            @db.Text
+  lastUpdated                                       String?                            @db.Text
+  sbaLenderNotified730710508                        String?                            @map("_sbaLenderNotified730710508") @db.Text
+  fimTtAmount                                       String?                            @db.Text
+  noticeOfTermLetterSent1313019150                  String?                            @map("_noticeOfTermLetterSent1313019150") @db.Text
+  attorneyName1009405366                            String?                            @map("_attorneyName1009405366") @db.Text
+  isTheSmacBalanceInCollections1935946120           String?                            @map("_isTheSmacBalanceInCollections1935946120") @db.Text
+  fimTtCaseBk                                       String?                            @db.Text
+  fimTtCollectionAgency                             String?                            @db.Text
+  fimDdTerminatedDate                               String?                            @db.Text
+  fimDdCuredDate                                    String?                            @db.Text
+  reaffirmationDateConfirmed1614381063              String?                            @map("_reaffirmationDateConfirmed1614381063") @db.Text
+  fimCbReasonOther                                  String?                            @db.Text
+  hasTheFranchiseCompliedFullyWithTheQaRe268330589  String?                            @map("_hasTheFranchiseCompliedFullyWithTheQaRe268330589") @db.Text
+  terminationStatus1324060484                       String?                            @map("_terminationStatus1324060484") @db.Text
+  bddApproved1107366834                             String?                            @map("_bddApproved1107366834") @db.Text
+  fimOtherBankruptcyType                            String?                            @db.Text
+  fimCbEntityClaimingBk                             String?                            @db.Text
+  vpOfOperationsApproved936553532                   String?                            @map("_vpOfOperationsApproved936553532") @db.Text
+  auditDateYear2104336254                           String?                            @map("_auditDateYear2104336254") @db.Text
+  smacBalance385601723                              String?                            @map("_smacBalance385601723") @db.Text
+  fimCbReason                                       String?                            @db.Text
+  unreportedRoyaltyLateFees1484096779               String?                            @map("_unreportedRoyaltyLateFees1484096779") @db.Text
+  doesTheFranchiseHaveACurrentContract1824079340    String?                            @map("_doesTheFranchiseHaveACurrentContract1824079340") @db.Text
+  fimCbBankruptcyType                               String?                            @db.Text
+  bdcApproved1227683972                             String?                            @map("_bdcApproved1227683972") @db.Text
+  fimTermination1                                   String?                            @db.Text
+  fimTermination0                                   String?                            @db.Text
+  unreportedNationalAdMinimums1687776094            String?                            @map("_unreportedNationalAdMinimums1687776094") @db.Text
+  futureFeesDue1254906686                           String?                            @map("_futureFeesDue1254906686") @db.Text
+  isTheFranchiseCompliantWithTellSmtellFm1280363080 String?                            @map("_isTheFranchiseCompliantWithTellSmtellFm1280363080") @db.Text
+  fimTaComments                                     String?                            @db.Text
+  claimedFiled839382262                             String?                            @map("_claimedFiled839382262") @db.Text
+  pursueCollections374457009                        String?                            @map("_pursueCollections374457009") @db.Text
+  reaffirmationDateSent303157679                    String?                            @map("_reaffirmationDateSent303157679") @db.Text
+  conveAndONotYetBilledAmerispecOnly711147575       String?                            @map("_conveAndONotYetBilledAmerispecOnly711147575") @db.Text
+  fimDdApprovedDate                                 String?                            @db.Text
+  ifNoWhatIsTheCorrectAddress2032879341             String?                            @map("_ifNoWhatIsTheCorrectAddress2032879341") @db.Text
+  rescindDate535723028                              String?                            @map("_rescindDate535723028") @db.Text
+  isTheFranchiseUnderAudit2141160435                String?                            @map("_isTheFranchiseUnderAudit2141160435") @db.Text
+  dateBankruptcyFiled1267633270                     String?                            @map("_dateBankruptcyFiled1267633270") @db.Text
+  isTheMarquetteGroupBalanceInCollections1100253240 String?                            @map("_isTheMarquetteGroupBalanceInCollections1100253240") @db.Text
+  fimTtName2                                        String?                            @db.Text
+  fimTtName1                                        String?                            @db.Text
+  attorneyContactInformation1389163789              String?                            @map("_attorneyContactInformation1389163789") @db.Text
+  fimDdFollowUpDate                                 String?                            @db.Text
+  fimTerminationdoc0                                String?                            @db.Text
+  unreportedRoyaltyMinimums62321260                 String?                            @map("_unreportedRoyaltyMinimums62321260") @db.Text
+  ifYesListMonthyearOfNrs316102697                  String?                            @map("_ifYesListMonthyearOfNrs316102697") @db.Text
+  isTheFranchiseCompliantWithInsurance607386885     String?                            @map("_isTheFranchiseCompliantWithInsurance607386885") @db.Text
+  doesTheFranchiseHaveLiveAnsweringAsRequ1940671819 String?                            @map("_doesTheFranchiseHaveLiveAnsweringAsRequ1940671819") @db.Text
+  currentYtdRevenue369859587                        String?                            @map("_currentYtdRevenue369859587") @db.Text
+  doesTheFranchisePurchaseProductsequipme913464049  String?                            @map("_doesTheFranchisePurchaseProductsequipme913464049") @db.Text
+  dateOfDischarge474851939                          String?                            @map("_dateOfDischarge474851939") @db.Text
+  fimDdEffectiveActionDate                          String?                            @db.Text
+  fimTtLiquidatedDamages                            String?                            @db.Text
+  fimRrRepresentative                               String?                            @db.Text
+  dateOfTerminationNotForFieldUse914137949          String?                            @map("_dateOfTerminationNotForFieldUse914137949") @db.Text
+  jdeAmountDueAsOf397894002                         String?                            @map("_jdeAmountDueAsOf397894002") @db.Text
+  areThereAnyNrsForTheLicense82788446               String?                            @map("_areThereAnyNrsForTheLicense82788446") @db.Text
+  auditSpecialistComments1638285021                 String?                            @map("_auditSpecialistComments1638285021") @db.Text
+  jdeAmountDue1293269767                            String?                            @map("_jdeAmountDue1293269767") @db.Text
+  isTheAddressOnFileInFimLicenseInfoTabCo630197666  String?                            @map("_isTheAddressOnFileInFimLicenseInfoTabCo630197666") @db.Text
+  collectionsAgency1816414527                       String?                            @map("_collectionsAgency1816414527") @db.Text
+  fimRrBankruptcy                                   String?                            @db.Text
+  terminationLetterReceivedAmsOnly1098342765        String?                            @map("_terminationLetterReceivedAmsOnly1098342765") @db.Text
+  fimTtCollected                                    String?                            @db.Text
+  reaffirmationAgreement795615262                   String?                            @map("_reaffirmationAgreement795615262") @db.Text
+  caseNumber1269439548                              String?                            @map("_caseNumber1269439548") @db.Text
+  cooApproved696883274                              String?                            @map("_cooApproved696883274") @db.Text
+  CenterInfoId                                      BigInt                             @db.UnsignedBigInt
+  CenterInfoReferenceId                             BigInt?
+  CenterInfo                                        CenterInfo?                        @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_Termination_CenterInfo_CenterInfoReferenceId")
+  TerminationAgencyAddress                          TerminationAgencyAddress[]
+  TerminationRepresentativeAddress                  TerminationRepresentativeAddress[]
+
+  @@index([CenterInfoReferenceId], map: "IX_Termination_CenterInfoReferenceId")
+}
+
+model TerminationAgencyAddress {
+  ReferenceId            BigInt       @id @default(autoincrement())
+  zipcode                String?      @db.Text
+  country                String?      @db.Text
+  emailIds               String?      @db.Text
+  extn                   String?      @db.Text
+  address                String?      @db.Text
+  faxNumbers             String?      @db.Text
+  mobileNumbers          String?      @db.Text
+  city                   String?      @db.Text
+  state                  String?      @db.Text
+  phoneNumbers           String?      @db.Text
+  TerminationReferenceId BigInt?
+  Termination            Termination? @relation(fields: [TerminationReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_TerminationAgencyAddress_Termination_TerminationReferenceId")
+
+  @@index([TerminationReferenceId], map: "IX_TerminationAgencyAddress_TerminationReferenceId")
+}
+
+model TerminationRepresentativeAddress {
+  ReferenceId            BigInt       @id @default(autoincrement())
+  zipcode                String?      @db.Text
+  country                String?      @db.Text
+  emailIds               String?      @db.Text
+  extn                   String?      @db.Text
+  address                String?      @db.Text
+  faxNumbers             String?      @db.Text
+  mobileNumbers          String?      @db.Text
+  city                   String?      @db.Text
+  state                  String?      @db.Text
+  phoneNumbers           String?      @db.Text
+  TerminationReferenceId BigInt?
+  Termination            Termination? @relation(fields: [TerminationReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_TerminationRepresentativeAddress_Termination_TerminationRefe~")
+
+  @@index([TerminationReferenceId], map: "IX_TerminationRepresentativeAddress_TerminationReferenceId")
+}
+
+model Territory {
+  ReferenceId                   BigInt      @id @default(autoincrement())
+  fimTtSalesRequirement         String?     @db.Text
+  fimTtLocation                 String?     @db.Text
+  fimTtCounty                   String?     @db.Text
+  fimTtZip                      String?     @db.Text
+  fimTtTypeTerritory            String?     @db.Text
+  fimTaNotes                    String?     @db.Text
+  lastUpdated                   String?     @db.Text
+  territoryDescription221093710 String?     @map("_territoryDescription221093710") @db.Text
+  fimTtGeoCoordinates           String?     @db.Text
+  fimTtZipLocator               String?     @db.Text
+  syncCheckBox                  String?     @db.Text
+  fimTtZipLocatorIdentical      String?     @db.Text
+  CenterInfoId                  BigInt      @db.UnsignedBigInt
+  CenterInfoReferenceId         BigInt?
+  CenterInfo                    CenterInfo? @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_Territory_CenterInfo_CenterInfoReferenceId")
+
+  @@index([CenterInfoReferenceId], map: "IX_Territory_CenterInfoReferenceId")
+}
+
+model TerritoryZipCode {
+  ReferenceId                   BigInt      @id @default(autoincrement())
+  contractualTerritory923687110 String?     @map("_contractualTerritory923687110") @db.Text
+  qrvSecondary723049387         String?     @map("_qrvSecondary723049387") @db.Text
+  crtSecondary78712761          String?     @map("_crtSecondary78712761") @db.Text
+  rxnaSecondary611675604        String?     @map("_rxnaSecondary611675604") @db.Text
+  srmPrimary261449920           String?     @map("_srmPrimary261449920") @db.Text
+  vipPrimary1545320295          String?     @map("_vipPrimary1545320295") @db.Text
+  rxnaPrimary612118522          String?     @map("_rxnaPrimary612118522") @db.Text
+  qrvprimary1658881347          String?     @map("_qrvprimary1658881347") @db.Text
+  sppPrimary881807340           String?     @map("_sppPrimary881807340") @db.Text
+  crtPrimary764190058           String?     @map("_crtPrimary764190058") @db.Text
+  CenterInfoId                  BigInt      @db.UnsignedBigInt
+  CenterInfoReferenceId         BigInt?
+  CenterInfo                    CenterInfo? @relation(fields: [CenterInfoReferenceId], references: [ReferenceId], onDelete: Restrict, onUpdate: Restrict, map: "FK_TerritoryZipCode_CenterInfo_CenterInfoReferenceId")
+
+  @@index([CenterInfoReferenceId], map: "IX_TerritoryZipCode_CenterInfoReferenceId")
+}
+
+model EFMigrationsHistory {
+  MigrationId    String @id @db.VarChar(150)
+  ProductVersion String @db.VarChar(32)
+
+  @@map("__EFMigrationsHistory")
+}

@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from './database/prisma.service';
 
 import axios from 'axios';
+import { Agreement } from '@prisma/client';
 
 @Injectable()
 export class AppService {
@@ -13,12 +14,6 @@ export class AppService {
   ) {}
 
   async getHello(): Promise<string> {
-    // const ret = await prisma.signe.findMany({
-    //         where: {
-    //             id: { in: [1, 2, 12] },
-    //         }
-    //     })
-
     const config = {
       method: 'post',
 
@@ -42,6 +37,7 @@ export class AppService {
 
     const data = items
       .map((resp) => ({
+        referenceId: BigInt(resp.referenceId),
         CenterInfoId: BigInt(resp.referenceId),
         fimTtPreviousLicenseNumber: '123456',
         fimTaComments: resp.fimTaComments,
@@ -65,130 +61,87 @@ export class AppService {
         constructionAddendum11166680038: resp.constructionAddendum11166680038,
         constructionAddendumNotes971483328:
           resp.constructionAddendumNotes971483328,
-        CenterInfoReferenceId: BigInt(resp.referenceId),
       }))
       .map((s) => {
         for (const i in s) if (!s[i]) s[i] = '';
         return s;
+      }) as Agreement[];
+
+    try {
+      await this.prisma.agreement.createMany({
+        data,
       });
-
-    const ret = await this.prisma.agreement.createMany({
-      data,
-    });
-
-    console.log(ret);
-    // items.map(async (resp) => {
-    //   if (resp.referenceId) {
-    //     const foundAgreement = await this.prisma.agreement.findFirst({
-    //       where: {
-    //         CenterInfoId: BigInt(resp.referenceId),
-    //       },
-    //     });
-
-    //     if (!foundAgreement) {
-    //       await this.prisma.agreement.create({
-    //         data: {
-    // CenterInfoId: BigInt(resp.referenceId),
-    // fimTtPreviousLicenseNumber: '123456',
-    // fimTaComments: resp.fimTaComments,
-    // fimDdDateExecuted: resp.fimDdDateExecuted,
-    // fimLicenseAgreement0: resp.fimLicenseAgreement0,
-    // constructionGrandfatherNotes1452571739:
-    //   resp.constructionGrandfatherNotes1452571739,
-    // contractLength1253742146: resp.contractLength1253742146,
-    // fimDdApprovedDate: resp.fimDdApprovedDate,
-    // constructionGrandfatherDateAdded15864853:
-    //   resp.constructionGrandfatherDateAdded15864853,
-    // miscellaneous2033967498: resp.miscellaneous2033967498,
-    // fimDdExpirationDate: resp.fimDdExpirationDate,
-    // fimDdClosingDate: resp.fimDdClosingDate,
-    // lastUpdated: resp.lastUpdated,
-    // constructionAddendum1567028247:
-    //   resp.constructionAddendum1567028247,
-    // constructionGrandfather71954091:
-    //   resp.constructionGrandfather71954091,
-    // miscellaneousAddedDate345281370:
-    //   resp.miscellaneousAddedDate345281370,
-    // constructionAddendumDateAdded579433813:
-    //   resp.constructionAddendumDateAdded579433813,
-    // constructionAddendum11166680038:
-    //   resp.constructionAddendum11166680038,
-    // constructionAddendumNotes971483328:
-    //   resp.constructionAddendumNotes971483328,
-    // CenterInfoReferenceId: BigInt(resp.referenceId),
-    //         },
-    //       });
-    //     }
-    //   }
-    // });
+    } catch (error) {
+      console.log(error);
+    }
 
     return 'Hello World!';
   }
 
-  async getPotatoe(): Promise<string> {
-    const config = {
-      method: 'post',
+  // async getPotatoe(): Promise<string> {
+  //   const config = {
+  //     method: 'post',
 
-      url: 'https://smcsky.franconnectuat.net/fc/rest/dataservices/retrieve?module=fim&subModule=centerInfo&responseType=JSON&filterXML=<fcRequest><filter><lastUpdateFrom>08/12/2022</lastUpdateFrom><lastUpdateTo>09/12/2022</lastUpdateTo></filter></fcRequest>',
+  //     url: 'https://smcsky.franconnectuat.net/fc/rest/dataservices/retrieve?module=fim&subModule=centerInfo&responseType=JSON&filterXML=<fcRequest><filter><lastUpdateFrom>08/12/2022</lastUpdateFrom><lastUpdateTo>09/12/2022</lastUpdateTo></filter></fcRequest>',
 
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+  //     headers: {
+  //       'Content-Type': 'application/x-www-form-urlencoded',
 
-        Authorization: 'Bearer xxx',
+  //       Authorization: 'Bearer xxx',
 
-        Cookie: 'XXX',
-      },
-    };
+  //       Cookie: 'XXX',
+  //     },
+  //   };
 
-    const resp = await axios(config);
+  //   const resp = await axios(config);
 
-    const items = resp.data.fcResponse.responseData.fimCenterInfo;
+  //   const items = resp.data.fcResponse.responseData.fimCenterInfo;
 
-    items.map(async (purur) => {
-      const findItem = await this.prisma.centerInfo.findFirst({
-        where: {
-          ReferenceId: BigInt(purur.ReferenceId),
-        },
-      });
+  //   items.map(async (purur) => {
+  //     const findItem = await this.prisma.centerInfo.findFirst({
+  //       where: {
+  //         ReferenceId: BigInt(purur.ReferenceId),
+  //       },
+  //     });
 
-      if (!findItem) {
-        await this.prisma.centerInfo.create({
-          data: {
-            ReferenceId: Number(purur.referenceId),
-            country: purur.country,
-            city: purur.city,
-            franchiseeName: purur.franchiseeName,
-            storeTypeId: purur.storeTypeId,
-            transferDate: purur.transferDate,
-            storeStatus: purur.storeStatus,
-            distributorLicenseNumber2023869614:
-              purur.distributorLicenseNumber2023869614,
-            versionID: purur.versionID,
-            areaID: purur.areaID,
-            storePhone: purur.storePhone,
-            customerAccountNumber1215412729:
-              purur.customerAccountNumber1215412729,
-            state: purur.state,
-            grandStoreOpeningDate: purur.grandStoreOpeningDate,
-            taxRateId: purur.taxRateId,
-            openingDate: purur.openingDate,
-            lastAttended: purur.lastAttended,
-            licenseBrand2012129995: purur.licenseBrand2012129995,
-            emailID: purur.emailID,
-            transactionType: purur.transactionType,
-            enterpriseNumber1691878038: purur.enterpriseNumber1691878038,
-            lastUpdate: purur.lastUpdate,
-            reportPeriodStartDate: purur.reportPeriodStartDate,
-            storeEmail: purur.storeEmail,
-            franchiseeStatus: purur.franchiseeStatus,
-            services1273437941: purur.services1273437941,
-            status: purur.status,
-            centerName: purur.centerName,
-          },
-        });
-      }
-    });
+  //     if (!findItem) {
+  //       await this.prisma.centerInfo.create({
+  //         data: {
+  //           ReferenceId: Number(purur.referenceId),
+  //           country: purur.country,
+  //           city: purur.city,
+  //           franchiseeName: purur.franchiseeName,
+  //           storeTypeId: purur.storeTypeId,
+  //           transferDate: purur.transferDate,
+  //           storeStatus: purur.storeStatus,
+  //           distributorLicenseNumber2023869614:
+  //             purur.distributorLicenseNumber2023869614,
+  //           versionID: purur.versionID,
+  //           areaID: purur.areaID,
+  //           storePhone: purur.storePhone,
+  //           customerAccountNumber1215412729:
+  //             purur.customerAccountNumber1215412729,
+  //           state: purur.state,
+  //           grandStoreOpeningDate: purur.grandStoreOpeningDate,
+  //           taxRateId: purur.taxRateId,
+  //           openingDate: purur.openingDate,
+  //           lastAttended: purur.lastAttended,
+  //           licenseBrand2012129995: purur.licenseBrand2012129995,
+  //           emailID: purur.emailID,
+  //           transactionType: purur.transactionType,
+  //           enterpriseNumber1691878038: purur.enterpriseNumber1691878038,
+  //           lastUpdate: purur.lastUpdate,
+  //           reportPeriodStartDate: purur.reportPeriodStartDate,
+  //           storeEmail: purur.storeEmail,
+  //           franchiseeStatus: purur.franchiseeStatus,
+  //           services1273437941: purur.services1273437941,
+  //           status: purur.status,
+  //           centerName: purur.centerName,
+  //         },
+  //       });
+  //     }
+  //   });
 
-    return 'Potatoe';
-  }
+  //   return 'Potatoe';
+  // }
 }

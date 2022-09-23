@@ -9,8 +9,8 @@ export class AppController {
   async getHello(): Promise<string> {
     return await this.appService.getHello();
   }
-  // @Get('Potoatoe')
-  // async Potoatoe(): Promise<string> {
-  //   return await this.appService.getPotatoe();
-  // }
+  @Get('potatoe')
+  async Potoatoe(): Promise<string> {
+    return await this.appService.getPotatoe();
+  }
 }

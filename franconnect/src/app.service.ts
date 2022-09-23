@@ -70,6 +70,7 @@ export class AppService {
     try {
       await this.prisma.agreement.createMany({
         data,
+        skipDuplicates: true,
       });
     } catch (error) {
       console.log(error);
@@ -78,70 +79,64 @@ export class AppService {
     return 'Hello World!';
   }
 
-  // async getPotatoe(): Promise<string> {
-  //   const config = {
-  //     method: 'post',
+  async getPotatoe(): Promise<string> {
+    const config = {
+      method: 'post',
 
-  //     url: 'https://smcsky.franconnectuat.net/fc/rest/dataservices/retrieve?module=fim&subModule=centerInfo&responseType=JSON&filterXML=<fcRequest><filter><lastUpdateFrom>08/12/2022</lastUpdateFrom><lastUpdateTo>09/12/2022</lastUpdateTo></filter></fcRequest>',
+      url: 'https://smcsky.franconnectuat.net/fc/rest/dataservices/retrieve?module=fim&subModule=centerInfo&responseType=JSON&filterXML=<fcRequest><filter><lastUpdateFrom>08/12/2022</lastUpdateFrom><lastUpdateTo>09/12/2022</lastUpdateTo></filter></fcRequest>',
 
-  //     headers: {
-  //       'Content-Type': 'application/x-www-form-urlencoded',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
 
-  //       Authorization: 'Bearer xxx',
+        Authorization:
+          'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUtZGF0ZSI6IjIwMjItMDktMjRUMDI6MzE6NDIuNTI5WiIsIlgtVGVuYW50SUQiOiJzbWNza3kuZnJhbmNvbm5lY3R1YXQubmV0Iiwic2NvcGUiOlsib3BlbmlkIiwiYWxsIl0sImV4cCI6MTY2Mzk4NjcwMiwianRpIjoiMjRPM21TZkVmOVJKTGk0ZmdLOU1kVVFINDljIiwiY2xpZW50X2lkIjoic21jc2t5YXBpIn0.MGTQU4uJdb2qyPpoUaaq-4te97Eokf7uwEz-5kMFz_CSFKdDL2mXG_Sj14xBjxflBghvlZ8FEcA8vYFvpSKgwWa4USbfz5zB7yyyzeMnX6AJhjOBKDbY7ATOaZBlGkaoJcnlvAyUhxN9ppTlVCcp_irdo7UgyicskJ2q2rTcUpxyxLq_aS8zCNnEPjTCfZEzdd-Fmrk73CWrD0lQXpqZhcEWX_zMUbNbmIzPF7hSI0cz7WGvLMaUvLGoGA4aYi1m3fVU_3u2uzBSNi9xKtDXzdF5BkYTnCKlVNVYhlP_HxrDV8mm_rz2X449L4vuwVY_pLDtik8keSI7pV0N3f2AoQ',
 
-  //       Cookie: 'XXX',
-  //     },
-  //   };
+        Cookie:
+          'JSESSIONID=954615DB9E8359A687241DD396EA9F79; JSESSIONID=2DC474E4F009E3F5809041D023F45497',
+      },
+    };
 
-  //   const resp = await axios(config);
+    const resp = await axios(config);
 
-  //   const items = resp.data.fcResponse.responseData.fimCenterInfo;
+    const items = resp.data.fcResponse.responseData.fimCenterInfo;
 
-  //   items.map(async (purur) => {
-  //     const findItem = await this.prisma.centerInfo.findFirst({
-  //       where: {
-  //         ReferenceId: BigInt(purur.ReferenceId),
-  //       },
-  //     });
+    const data = items.map((purur) => ({
+      referenceId: Number(purur.referenceId),
+      country: purur.country,
+      city: purur.city,
+      franchiseeName: purur.franchiseeName,
+      storeTypeId: purur.storeTypeId,
+      transferDate: purur.transferDate,
+      storeStatus: purur.storeStatus,
+      distributorLicenseNumber2023869614:
+        purur.distributorLicenseNumber2023869614,
+      versionID: purur.versionID,
+      areaID: purur.areaID,
+      storePhone: purur.storePhone,
+      customerAccountNumber1215412729: purur.customerAccountNumber1215412729,
+      state: purur.state,
+      grandStoreOpeningDate: purur.grandStoreOpeningDate,
+      taxRateId: purur.taxRateId,
+      openingDate: purur.openingDate,
+      lastAttended: purur.lastAttended,
+      licenseBrand2012129995: purur.licenseBrand2012129995,
+      emailID: purur.emailID,
+      transactionType: purur.transactionType,
+      enterpriseNumber1691878038: purur.enterpriseNumber1691878038,
+      lastUpdate: purur.lastUpdate,
+      reportPeriodStartDate: purur.reportPeriodStartDate,
+      storeEmail: purur.storeEmail,
+      franchiseeStatus: purur.franchiseeStatus,
+      services1273437941: purur.services1273437941,
+      status: purur.status,
+      centerName: purur.centerName,
+    }));
 
-  //     if (!findItem) {
-  //       await this.prisma.centerInfo.create({
-  //         data: {
-  //           ReferenceId: Number(purur.referenceId),
-  //           country: purur.country,
-  //           city: purur.city,
-  //           franchiseeName: purur.franchiseeName,
-  //           storeTypeId: purur.storeTypeId,
-  //           transferDate: purur.transferDate,
-  //           storeStatus: purur.storeStatus,
-  //           distributorLicenseNumber2023869614:
-  //             purur.distributorLicenseNumber2023869614,
-  //           versionID: purur.versionID,
-  //           areaID: purur.areaID,
-  //           storePhone: purur.storePhone,
-  //           customerAccountNumber1215412729:
-  //             purur.customerAccountNumber1215412729,
-  //           state: purur.state,
-  //           grandStoreOpeningDate: purur.grandStoreOpeningDate,
-  //           taxRateId: purur.taxRateId,
-  //           openingDate: purur.openingDate,
-  //           lastAttended: purur.lastAttended,
-  //           licenseBrand2012129995: purur.licenseBrand2012129995,
-  //           emailID: purur.emailID,
-  //           transactionType: purur.transactionType,
-  //           enterpriseNumber1691878038: purur.enterpriseNumber1691878038,
-  //           lastUpdate: purur.lastUpdate,
-  //           reportPeriodStartDate: purur.reportPeriodStartDate,
-  //           storeEmail: purur.storeEmail,
-  //           franchiseeStatus: purur.franchiseeStatus,
-  //           services1273437941: purur.services1273437941,
-  //           status: purur.status,
-  //           centerName: purur.centerName,
-  //         },
-  //       });
-  //     }
-  //   });
+    const result = await this.prisma.centerInfo.createMany({
+      data,
+      skipDuplicates: true,
+    });
 
-  //   return 'Potatoe';
-  // }
+    return 'Potatoe';
+  }
 }
